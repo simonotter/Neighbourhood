@@ -1,3 +1,6 @@
+var markers = {};
+var map;
+
 // ViewModel
 var ViewModel = function() {
     var self = this;
@@ -8,8 +11,7 @@ var ViewModel = function() {
         self.placeList.push(new Place(place));
     });
 
-
-    this.currentPlace = ko.observable(this.placeList()[0]);
+    this.currentPlace = ko.observable(null);
 
     this.placeTypes = ko.observableArray(['Show all', 'Cafe', 'Groceries', 'Restaurant']);
 
@@ -17,7 +19,7 @@ var ViewModel = function() {
 
     this.filteredPlaces = ko.computed(function() {
         var filter = self.chosenType();
-        
+
         if (!filter || filter == self.placeTypes()[0]) {
             return self.placeList();
         } else {
@@ -30,37 +32,54 @@ var ViewModel = function() {
     // Behaviours
     this.setCurrentPlace = function(clickedPlace) {
         self.currentPlace(clickedPlace);
+
+        // Clear all markers
+        self.placeList().forEach(function(place){
+            place.marker.setMap(null);
+        });
+
+        // Make map marker visible
+        clickedPlace.marker.setMap(map);
     };
 
     this.setCurrentType = function(clickedType) {
         self.chosenType(clickedType);
+        self.currentPlace(null);
+
+        // Clear all markers
+        self.placeList().forEach(function(place){
+            place.marker.setMap(null);
+        });
+
+        // Make map markers visible for chosen type
+        self.filteredPlaces().forEach(function(place){
+            place.marker.setMap(map);
+        });
     };
+
+
+
 }
 
+// Create Google Map
+initMap();
 // Kickoff the knockout app
 ko.applyBindings(new ViewModel())
 
-function init_map() {
+function initMap() {
 
-    var var_location = new google.maps.LatLng(53.370289, -1.491737);
+    var centerLocation = new google.maps.LatLng(53.370300, -1.491737);
 
-    var var_mapoptions = {
-        center: var_location,
-
-        zoom: 14
+    var mapOptions = {
+        center: centerLocation,
+        zoom: 15,
+        scrollwheel: false,
+        streetViewControl: false,
+        mapTypeControl: false,
+        scaleControl: true
     };
 
-    var var_marker = new google.maps.Marker({
-        position: var_location,
-        map: var_map,
-        title: "New York"
-    });
-
-    var var_map = new google.maps.Map(document.getElementById("map-container"),
-        var_mapoptions);
-
-    var_marker.setMap(var_map);
+    map = new google.maps.Map(document.getElementById("map-container"),
+        mapOptions);
 
 }
-
-google.maps.event.addDomListener(window, 'load', init_map);
