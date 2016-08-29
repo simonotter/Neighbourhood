@@ -38,6 +38,12 @@ var ViewModel = function() {
         // Create an onclick event to open an infoWindow at each marker.
         tempPlace.marker.addListener('click', function() {
             populateInfoWindow(this, largeInfowindow);
+            if (this.getAnimation() !== null) {
+                this.setAnimation(null);
+            } else {
+                this.setAnimation(google.maps.Animation.BOUNCE);
+                this.setAnimation(4);
+            }
         });
 
     });
@@ -77,13 +83,6 @@ var ViewModel = function() {
         // Make map marker visible for the place clicked
         clickedPlace.marker.setMap(map);
 
-        clickedPlace.marker.addListener('click', function() {
-            if (clickedPlace.marker.getAnimation() !== null) {
-              clickedPlace.marker.setAnimation(null);
-            } else {
-              clickedPlace.marker.setAnimation(google.maps.Animation.BOUNCE);
-            }
-        })
     };
 
     // Set the current type
@@ -96,10 +95,13 @@ var ViewModel = function() {
             place.marker.setMap(null);
         });
 
+        var bounds = new google.maps.LatLngBounds();
         // Make map markers visible for chosen type
         self.filteredPlaces().forEach(function(place){
             place.marker.setMap(map);
+            bounds.extend(place.marker.position);
         });
+        map.fitBounds(bounds);
     };
 
 }
