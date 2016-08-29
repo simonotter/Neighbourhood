@@ -43,22 +43,7 @@ var Place = function(data) {
     this.type = ko.observable(data.type);
     this.location = ko.observable(data.location);
 
-    var markerImage;
-    if (data.type == 'Cafe') {
-        markerImage = 'img/icons/Coffee_1.svg';
-    } else if (data.type == 'Groceries') {
-        markerImage = 'img/icons/Shop_2.svg';
-    } else if (data.type == 'Restaurant') {
-        markerImage = 'img/icons/Food_5.svg';
-    } else {
-        markerImage = 'img/icons/Arrow_7.svg';
-    }
-
-    this.marker = new google.maps.Marker({
-        position: data.location,
-        icon: markerImage,
-        animation: google.maps.Animation.DROP
-    });
+    
 
     this.img = data.img;
 }
