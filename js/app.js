@@ -114,3 +114,7 @@ function googleSuccess() {
     // Kickoff the knockout app
     ko.applyBindings(new ViewModel())
 }
+
+function googleError() {
+    alert("Problem with Google Maps.");
+}
