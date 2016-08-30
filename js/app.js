@@ -2,7 +2,7 @@ var markers = {};
 var map;
 
 // ViewModel
-var ViewModel = function() {
+var ViewModel = function () {
     var self = this;
 
     // Create the places array
@@ -11,32 +11,35 @@ var ViewModel = function() {
     var markerImage;
     var largeInfowindow = new google.maps.InfoWindow();
 
-    places.forEach(function(place) {
+
+    places.forEach(function (place) {
         tempPlace = new Place(place);
 
         // Add Google map markers detail
-        if (place.type == 'Cafe') {
+        if (place.type === 'Cafe') {
             markerImage = 'img/icons/Coffee_1.svg';
-        } else if (place.type == 'Groceries') {
+        } else if (place.type === 'Groceries') {
             markerImage = 'img/icons/Shop_2.svg';
-        } else if (place.type == 'Restaurant') {
+        } else if (place.type === 'Restaurant') {
             markerImage = 'img/icons/Food_5.svg';
         } else {
             markerImage = 'img/icons/Arrow_7.svg';
         }
+
         tempPlace.marker = new google.maps.Marker({
             position: place.location,
             icon: markerImage,
             title: place.name,
             animation: google.maps.Animation.DROP,
-            id: place.name
+            id: place.name,
+            foursquareVenue_id: place.foursquareVenue_id
         });
 
         // Put the place on the placeList
         self.placeList.push(tempPlace);
 
         // Create an onclick event to open an infoWindow at each marker.
-        tempPlace.marker.addListener('click', function() {
+        tempPlace.marker.addListener('click', function () {
             populateInfoWindow(this, largeInfowindow);
             if (this.getAnimation() !== null) {
                 this.setAnimation(null);
@@ -59,24 +62,24 @@ var ViewModel = function() {
     this.chosenType = ko.observable(this.placeTypes()[0]);
 
     //Filter the places based on the chosen type
-    this.filteredPlaces = ko.computed(function() {
+    this.filteredPlaces = ko.computed(function () {
         var filter = self.chosenType();
 
-        if (!filter || filter == self.placeTypes()[0]) {
+        if (!filter || filter === self.placeTypes()[0]) {
             return self.placeList();
         } else {
-            return ko.utils.arrayFilter(self.placeList(), function(place) {
-                return place.type() == filter;
+            return ko.utils.arrayFilter(self.placeList(), function (place) {
+                return place.type() === filter;
             });
         }
     });
 
     // Set the current place
-    this.setCurrentPlace = function(clickedPlace) {
+    this.setCurrentPlace = function (clickedPlace) {
         self.currentPlace(clickedPlace);
 
         // Clear all markers
-        self.placeList().forEach(function(place){
+        self.placeList().forEach(function (place) {
             place.marker.setMap(null);
         });
 
@@ -86,27 +89,25 @@ var ViewModel = function() {
     };
 
     // Set the current type
-    this.setCurrentType = function(clickedType) {
+    this.setCurrentType = function (clickedType) {
         self.chosenType(clickedType);
         self.currentPlace(null);
 
         // Clear all markers
-        self.placeList().forEach(function(place){
+        self.placeList().forEach(function (place) {
             place.marker.setMap(null);
         });
 
         var bounds = new google.maps.LatLngBounds();
         // Make map markers visible for chosen type
-        self.filteredPlaces().forEach(function(place){
+        self.filteredPlaces().forEach(function (place) {
             place.marker.setMap(map);
             bounds.extend(place.marker.position);
         });
         map.fitBounds(bounds);
     };
 
-}
-
-
+};
 
 function googleSuccess() {
     // Create Google Map
