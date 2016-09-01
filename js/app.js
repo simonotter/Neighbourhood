@@ -1,5 +1,7 @@
+"use strict";
 var markers = {};
 var map;
+var largeInfowindow;
 
 // ViewModel
 var ViewModel = function () {
@@ -9,7 +11,7 @@ var ViewModel = function () {
     this.placeList = ko.observableArray([]);
     var tempPlace;
     var markerImage;
-    var largeInfowindow = new google.maps.InfoWindow();
+    largeInfowindow = new google.maps.InfoWindow();
 
 
     places.forEach(function (place) {
