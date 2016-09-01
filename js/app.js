@@ -1,7 +1,7 @@
 "use strict";
-var markers = {};
 var map;
 var largeInfowindow;
+
 
 // ViewModel
 var ViewModel = function () {
@@ -63,6 +63,7 @@ var ViewModel = function () {
         var filter = self.chosenType();
 
         if (!filter || filter === self.placeTypes()[0]) {
+            console.log('all');
             return self.placeList();
         } else {
             return ko.utils.arrayFilter(self.placeList(), function (place) {
@@ -115,6 +116,9 @@ var ViewModel = function () {
             marker.setAnimation(4);
         }
     };
+
+    //Set the initial type to the first type (Show all)
+    this.setCurrentType(this.placeTypes()[0]);
 
 };
 
