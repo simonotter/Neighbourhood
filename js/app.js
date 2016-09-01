@@ -63,7 +63,6 @@ var ViewModel = function () {
         var filter = self.chosenType();
 
         if (!filter || filter === self.placeTypes()[0]) {
-            console.log('all');
             return self.placeList();
         } else {
             return ko.utils.arrayFilter(self.placeList(), function (place) {
@@ -86,6 +85,8 @@ var ViewModel = function () {
 
         // Animate the marker
         self.animate(clickedPlace.marker);
+        getFoursquareRating(clickedPlace.marker);
+        largeInfowindow.open(map, clickedPlace.marker);
 
     };
 

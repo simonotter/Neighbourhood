@@ -25,7 +25,6 @@ function populateInfoWindow(marker, infoWindow) {
     // Check to make sure the infoWindow is not already opened on this marker.
     if (infoWindow.marker !== marker) {
         infoWindow.marker = marker;
-        //infoWindow.setContent('<div><strong>' + marker.title + '</strong><br>Foursquare Rating: (<span id="rate">unknown' + getFoursquareRating(marker) + '</span>)' + '</div>');
         getFoursquareRating(marker);
         infoWindow.open(map, marker);
     }
