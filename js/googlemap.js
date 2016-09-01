@@ -55,6 +55,6 @@ function getFoursquareRating(marker) {
         largeInfowindow.setContent('<div><strong>' + marker.title + '</strong><br>Foursquare Rating: (<span id="rate">' + foursquareRating + '</span>)' + '</div>');
     })
     .fail(function() {
-        largeInfowindow.setContent('<div><strong>' + marker.title + '</strong><br>Foursquare Rating: (<span id="rate">unknown</span>)' + '</div>');
+        largeInfowindow.setContent('<div><strong>' + marker.title + '</strong></div>');
     });
 }
