@@ -1,4 +1,5 @@
 function initMap() {
+    "use strict";
 
     var centerLocation = new google.maps.LatLng(53.370300, -1.491737);
 
@@ -20,16 +21,20 @@ function initMap() {
 // which will open at the marker that is clicked and populate based on that
 // marker's content.
 function populateInfoWindow(marker, infoWindow) {
+    "use strict";
     // Check to make sure the infoWindow is not already opened on this marker.
     if (infoWindow.marker !== marker) {
         infoWindow.marker = marker;
-        infoWindow.setContent('<div><strong>' + marker.title + '</strong><br>Foursquare Rating: (<span id="rate">unknown' + getFoursquareRating(marker.foursquareVenue_id) + '</span>)' + '</div>');
+        //infoWindow.setContent('<div><strong>' + marker.title + '</strong><br>Foursquare Rating: (<span id="rate">unknown' + getFoursquareRating(marker) + '</span>)' + '</div>');
+        getFoursquareRating(marker);
         infoWindow.open(map, marker);
     }
 }
 
 // Get the venue rating from Foursquare if it exists
-function getFoursquareRating(venue_id) {
+function getFoursquareRating(marker) {
+    "use strict";
+    var venue_id = marker.foursquareVenue_id;
     var client_id = 'XA3ZQEOYTTA5QGJ1Z01N5ZSLTPJITTZTBUZT5U0JX0NNZDFB';
     var client_secret = 'LMYGHDXVCZ0TJ3DN3HOA5XZ3VFPQSJM4PHYGVIBKENGIAR3C';
     var foursquareVenueAPI = 'https://api.foursquare.com/v2/venues/';
@@ -47,8 +52,10 @@ function getFoursquareRating(venue_id) {
         } else {
             foursquareRating = 'unknown';
         }
-
-        // Update rating in Google marker div
-        $('#rate').text(foursquareRating);
+        // Update rating in Google marker infoWindow
+        largeInfowindow.setContent('<div><strong>' + marker.title + '</strong><br>Foursquare Rating: (<span id="rate">' + foursquareRating + '</span>)' + '</div>');
+    })
+    .fail(function() {
+        largeInfowindow.setContent('<div><strong>' + marker.title + '</strong><br>Foursquare Rating: (<span id="rate">unknown</span>)' + '</div>');
     });
 }
