@@ -44,12 +44,6 @@ var ViewModel = function () {
         tempPlace.marker.addListener('click', function () {
             populateInfoWindow(this, largeInfowindow);
             self.animate(this);
-            // if (this.getAnimation() !== null) {
-            //     this.setAnimation(null);
-            // } else {
-            //     this.setAnimation(google.maps.Animation.BOUNCE);
-            //     this.setAnimation(4);
-            // }
         });
 
     });
