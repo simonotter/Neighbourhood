@@ -43,12 +43,13 @@ var ViewModel = function () {
         // Create an onclick event to open an infoWindow at each marker.
         tempPlace.marker.addListener('click', function () {
             populateInfoWindow(this, largeInfowindow);
-            if (this.getAnimation() !== null) {
-                this.setAnimation(null);
-            } else {
-                this.setAnimation(google.maps.Animation.BOUNCE);
-                this.setAnimation(4);
-            }
+            self.animate(this);
+            // if (this.getAnimation() !== null) {
+            //     this.setAnimation(null);
+            // } else {
+            //     this.setAnimation(google.maps.Animation.BOUNCE);
+            //     this.setAnimation(4);
+            // }
         });
 
     });
@@ -88,6 +89,9 @@ var ViewModel = function () {
         // Make map marker visible for the place clicked
         clickedPlace.marker.setMap(map);
 
+        // Animate the marker
+        self.animate(clickedPlace.marker);
+
     };
 
     // Set the current type
@@ -107,6 +111,15 @@ var ViewModel = function () {
             bounds.extend(place.marker.position);
         });
         map.fitBounds(bounds);
+    };
+
+    this.animate = function(marker) {
+        if (marker.getAnimation() !== null) {
+            marker.setAnimation(null);
+        } else {
+            marker.setAnimation(google.maps.Animation.BOUNCE);
+            marker.setAnimation(4);
+        }
     };
 
 };
