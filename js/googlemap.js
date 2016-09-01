@@ -25,11 +25,6 @@ function populateInfoWindow(marker, infoWindow) {
         infoWindow.marker = marker;
         infoWindow.setContent('<div><strong>' + marker.title + '</strong><br>Foursquare Rating: (<span id="rate">unknown' + getFoursquareRating(marker.foursquareVenue_id) + '</span>)' + '</div>');
         infoWindow.open(map, marker);
-
-        // Make sure the marker property is cleared if the infoWindow is closed.
-        infoWindow.addListener('closeclick', function () {
-            infoWindow.setMarker(null);
-        });
     }
 }
 
