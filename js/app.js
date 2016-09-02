@@ -8,7 +8,7 @@ var ViewModel = function () {
     var self = this;
 
     // Create the places array
-    this.placeList = ko.observableArray([]);
+    self.placeList = ko.observableArray();
     var tempPlace;
     var markerImage;
     largeInfowindow = new google.maps.InfoWindow();
@@ -50,16 +50,16 @@ var ViewModel = function () {
 
     // Creat the list of place types
     // TODO: Move this data to the model
-    this.placeTypes = ko.observableArray(['Show all', 'Cafe', 'Groceries', 'Restaurant']);
+    self.placeTypes = ko.observableArray(['Show all', 'Cafe', 'Groceries', 'Restaurant']);
 
     //Set the initial place to nothing
-    this.currentPlace = ko.observable(null);
+    self.currentPlace = ko.observable(null);
 
     //Set the initial type to the first type (Show all)
-    this.chosenType = ko.observable(this.placeTypes()[0]);
+    self.chosenType = ko.observable(this.placeTypes()[0]);
 
     //Filter the places based on the chosen type
-    this.filteredPlaces = ko.computed(function () {
+    self.filteredPlaces = ko.computed(function () {
         var filter = self.chosenType();
 
         if (!filter || filter === self.placeTypes()[0]) {
@@ -72,7 +72,7 @@ var ViewModel = function () {
     });
 
     // Set the current place
-    this.setCurrentPlace = function (clickedPlace) {
+    self.setCurrentPlace = function (clickedPlace) {
         self.currentPlace(clickedPlace);
 
         // Clear all markers
@@ -91,7 +91,7 @@ var ViewModel = function () {
     };
 
     // Set the current type
-    this.setCurrentType = function (clickedType) {
+    self.setCurrentType = function (clickedType) {
         self.chosenType(clickedType);
         self.currentPlace(null);
 
@@ -109,7 +109,7 @@ var ViewModel = function () {
         map.fitBounds(bounds);
     };
 
-    this.animate = function(marker) {
+    self.animate = function(marker) {
         if (marker.getAnimation() !== null) {
             marker.setAnimation(null);
         } else {
@@ -119,7 +119,7 @@ var ViewModel = function () {
     };
 
     //Set the initial type to the first type (Show all)
-    this.setCurrentType(this.placeTypes()[0]);
+    self.setCurrentType(self.placeTypes()[0]);
 
 };
 
